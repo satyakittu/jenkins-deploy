@@ -1,0 +1,20 @@
+#%RAML 1.0 SecurityScheme
+type: Basic Authentication
+description: provide username and password
+describedBy:
+  headers:
+    username:
+      type: string
+    password:
+      type: string
+  responses:
+    200:
+      body:
+        application/json:
+          type: string
+          example: "username and password are validated"
+    401:
+      body:
+        application/json:
+          type: string
+          example: "username and password are worng"

@@ -1,0 +1,107 @@
+#%RAML 1.0
+title: sys-api
+
+protocols: [HTTP,HTTPS]
+
+securitySchemes:
+  basic: !include securitySchema/securityScheme.raml
+
+securedBy:
+  - basic
+
+traits:
+  get-data: !include traits/get-trait.raml
+  post-data: !include traits/post-trait.raml
+  put-data: !include traits/put-trait.raml
+  patch-data: !include traits/patch-trait.raml
+  delete-data: !include traits/delete-trait.raml
+
+resourceTypes:
+  put-rs: !include resourceTypes/put-resourceType.raml
+
+
+/banking-sector:
+  get:
+    description: banking details
+    queryParameters:
+      id:
+        type: number
+        required: true
+        example: 10
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include dataType/input.raml
+            example: !include example/output.json
+              
+    is:
+      - get-data
+          
+  
+  post:
+    description: insert data
+    body:
+      application/json:
+        type: object
+        example: !include example/output.json
+    responses:
+      201:
+        body:
+          application/json:
+            type: !include dataType/errorResponse.raml
+            example: !include example/200.json
+    is:
+      - post-data
+
+
+# PUT method
+
+  type: put-rs    # resouce type
+  is: put-data     # traits
+
+
+
+/healthCheck:
+
+  /{cid}:
+    uriParameters:
+      cid:
+        type: number
+    patch:
+      description: to update a resource
+      body:
+        application/json:
+          type: !include exchange_modules/6c02fc2c-2b5e-4399-a240-b11ae9042ca7/datatype-frag/1.0.0/input.raml
+          example: !include example/output.json
+      responses:
+        200:
+          body:
+            application/json:
+              type: string
+              example: "updated sucessfully!!!!!!"
+      is:
+        - patch-data
+
+
+    delete:
+      description: deleting the resource
+      queryParameters:
+        cid:
+          type: number
+          required: true
+          example: 15
+      responses:
+        200:
+          body:
+            application/json:
+              example: {
+                "msg":"deleted sucessfully!!"
+              }
+      is:
+        - delete-data
+            
+      
+
+
+              

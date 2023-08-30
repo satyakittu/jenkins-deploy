@@ -1,0 +1,13 @@
+#%RAML 1.0 ResourceType
+put:
+    description: update existing  record
+    body:
+      application/json:
+        type: object
+        example: !include ../example/output.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: string
+            example: "updated sucessfully!!!!!!"
